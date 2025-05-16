@@ -16,10 +16,10 @@ import { Separator } from '@/components/ui/separator';
 export default function IntegrationsPage() {
 	const router = useRouter();
 	const currentStep = 2;
-	const totalSteps = 3;
+	const totalSteps = 4;
 
 	const handleContinue = () => {
-		router.push('/onboarding/wizard');
+		router.push('/onboarding/money-snapshot');
 	};
 
 	return (
@@ -29,6 +29,7 @@ export default function IntegrationsPage() {
 			currentStep={currentStep}
 			totalSteps={totalSteps}
 			onNext={handleContinue}
+			onBack={() => router.push('/onboarding')}
 			isNextDisabled={false}
 			nextLabel="Continue"
 		>

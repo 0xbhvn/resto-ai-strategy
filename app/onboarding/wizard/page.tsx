@@ -30,8 +30,6 @@ type BasicFormValues = z.infer<typeof basicFormSchema>;
 
 export default function WizardPage() {
 	const router = useRouter();
-	const [step, setStep] = useState(1);
-	const totalSteps = 3;
 	const [activeTab, setActiveTab] = useState('identity');
 
 	const form = useForm<BasicFormValues>({
@@ -53,10 +51,8 @@ export default function WizardPage() {
 	const nextTab = () => {
 		if (activeTab === 'identity') {
 			setActiveTab('financials');
-			setStep(2);
 		} else if (activeTab === 'financials') {
 			setActiveTab('goals');
-			setStep(3);
 		} else {
 			form.handleSubmit(handleSubmit)();
 		}
@@ -65,10 +61,8 @@ export default function WizardPage() {
 	const previousTab = () => {
 		if (activeTab === 'financials') {
 			setActiveTab('identity');
-			setStep(1);
 		} else if (activeTab === 'goals') {
 			setActiveTab('financials');
-			setStep(2);
 		}
 	};
 
@@ -76,10 +70,16 @@ export default function WizardPage() {
 		<WizardLayout
 			title="Essential Information"
 			description="We need a few key details to personalize your Nitify experience."
-			currentStep={step}
-			totalSteps={totalSteps}
+			currentStep={4}
+			totalSteps={4}
 			onNext={nextTab}
-			onBack={previousTab}
+			onBack={() => {
+				if (activeTab === 'identity') {
+					router.push('/onboarding/money-snapshot');
+				} else {
+					previousTab();
+				}
+			}}
 			isNextDisabled={false}
 			nextLabel={activeTab === 'goals' ? 'Complete' : 'Next'}
 		>
@@ -91,22 +91,11 @@ export default function WizardPage() {
 						className="w-full"
 					>
 						<TabsList className="grid grid-cols-3 mb-6">
-							<TabsTrigger
-								value="identity"
-								onClick={() => setStep(1)}
-							>
-								Identity
-							</TabsTrigger>
-							<TabsTrigger
-								value="financials"
-								onClick={() => setStep(2)}
-							>
+							<TabsTrigger value="identity">Identity</TabsTrigger>
+							<TabsTrigger value="financials">
 								Financials
 							</TabsTrigger>
-							<TabsTrigger
-								value="goals"
-								onClick={() => setStep(3)}
-							>
+							<TabsTrigger value="goals">
 								Goals & Pain
 							</TabsTrigger>
 						</TabsList>
@@ -116,7 +105,7 @@ export default function WizardPage() {
 							className="space-y-4"
 						>
 							<div className="text-sm text-muted-foreground mb-4">
-								Tell us about your restaurant's identity.
+								Tell us about your restaurant&apos;s identity.
 							</div>
 
 							<FormField
@@ -146,7 +135,7 @@ export default function WizardPage() {
 							className="space-y-4"
 						>
 							<div className="text-sm text-muted-foreground mb-4">
-								Tell us about your restaurant's financial
+								Tell us about your restaurant&apos;s financial
 								metrics.
 							</div>
 
@@ -237,8 +226,8 @@ export default function WizardPage() {
 											/>
 										</FormControl>
 										<FormDescription>
-											What's your biggest challenge right
-											now?
+											What&apos;s your biggest challenge
+											right now?
 										</FormDescription>
 									</FormItem>
 								)}

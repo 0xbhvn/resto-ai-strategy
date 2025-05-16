@@ -4,16 +4,17 @@ import { useRouter } from 'next/navigation';
 import { WizardLayout } from '@/components/wizard/wizard-layout';
 import { OutletForm } from '@/components/wizard/outlet-form';
 import type { OutletFormValues } from '@/components/wizard/outlet-form';
+import { useRef } from 'react';
 
 export default function OnboardingPage() {
 	const router = useRouter();
+	const formRef = useRef<HTMLFormElement>(null);
 	const currentStep = 1;
-	const totalSteps = 3; // We'll implement more steps later
+	const totalSteps = 4; // Updated to reflect the added money-snapshot step
 
 	const handleOutletSubmit = (values: OutletFormValues) => {
 		console.log('Outlet form values:', values);
 		// In a real app, you would submit this data to your API
-		// For now, just redirect to the next step
 		router.push('/onboarding/integrations');
 	};
 
@@ -24,13 +25,16 @@ export default function OnboardingPage() {
 			currentStep={currentStep}
 			totalSteps={totalSteps}
 			onNext={() => {
-				// This would be called by the "Next" button in the form
-				// Currently handled by the form submission itself
+				// Trigger the form submission when Next is clicked
+				formRef.current?.requestSubmit();
 			}}
-			isNextDisabled={true} // We'll let the form handle submission
+			isNextDisabled={false} // Enable the Continue button
 			nextLabel="Continue"
 		>
-			<OutletForm onSubmit={handleOutletSubmit} />
+			<OutletForm
+				onSubmit={handleOutletSubmit}
+				formRef={formRef}
+			/>
 		</WizardLayout>
 	);
 }

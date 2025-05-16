@@ -1,0 +1,153 @@
+# Nitify User Journey Action Plan
+
+done:
+  # Onboarding Phase
+  - screen: "Initial Outlet Info"
+    path: "/onboarding"
+    component: "OutletForm"
+    features:
+      - Restaurant name
+      - Restaurant type selection (Restaurant/Café-bistro/Cloud-kitchen)
+      - City & Neighborhood input
+    next: "/onboarding/integrations"
+
+  - screen: "Connect Systems"
+    path: "/onboarding/integrations"
+    component: "IntegrationCard"
+    features:
+      - POS system connection (Petpooja, Posist)
+      - Delivery platforms connection (UrbanPiper, Swiggy, Zomato)
+    next: "/onboarding/money-snapshot"
+
+  - screen: "Money Snapshot"
+    path: "/onboarding/money-snapshot"
+    features:
+      - Monthly gross sales input
+      - Average ticket size input
+      - Food cost percentage input
+      - Labor cost percentage input
+    next: "/onboarding/wizard"
+
+  - screen: "Essential Information"
+    path: "/onboarding/wizard"
+    features:
+      - Tab-based interface (Identity, Financials, Goals & Pain)
+      - Pain point input
+      - Priority focus areas selection
+    next: "/dashboard"
+
+todo:
+  # Dashboard Phase
+  - screen: "Home Dashboard"
+    path: "/dashboard"
+    features:
+      - Header KPI bar (Sales, Margin delta)
+      - Star-room suggestion
+      - "Choose a Room" CTA
+    components_needed:
+      - DashboardLayout
+      - KPIBar
+      - SuggestionCard
+
+  # Room Selection Phase
+  - screen: "Room Grid"
+    path: "/dashboard/rooms"
+    features:
+      - 14 room cards with status chips (Ready, Needs Info, Locked)
+      - Masonry layout for cards
+    components_needed:
+      - RoomGrid
+      - RoomCard
+      - StatusChip
+
+  # Room Question Phase
+  - screen: "Room Micro-Wizard"
+    path: "/dashboard/rooms/:id/questions"
+    features:
+      - Up to 3 missing questions modal
+      - Dynamic connector integration
+      - Real-time validation
+    components_needed:
+      - MicroWizard
+      - DynamicQuestionForm
+      - ConnectorIntegrationPill
+
+  # Strategy Generation Phase
+  - screen: "Generate Strategy"
+    path: "/dashboard/rooms/:id/strategy"
+    features:
+      - Strategy generation button
+      - Loading/streaming interface
+      - AI-generated strategy display
+    components_needed:
+      - StrategyGenerator
+      - StreamingResponse
+      - LoadingSkeleton
+
+  # Strategy Review Phase
+  - screen: "Strategy Review"
+    path: "/dashboard/rooms/:id/review"
+    features:
+      - Summary banner
+      - Issues accordion sorted by ROI
+      - Action board with draggable cards
+      - Quick calculations table
+      - Revise/Approve buttons
+    components_needed:
+      - SummaryBanner
+      - IssuesAccordion
+      - ActionBoard
+      - QuickCalcTable
+
+  # Plan Building Phase
+  - screen: "Plan Auto-Build"
+    path: "/dashboard/rooms/:id/plan"
+    features:
+      - Task templater for subtasks
+      - Channel selection modal
+      - Kanban board (To-do, Doing, Done)
+    components_needed:
+      - TaskTemplater
+      - ChannelModal
+      - KanbanBoard
+
+  # Execution Phase
+  - screen: "Execution Dashboard"
+    path: "/dashboard/rooms/:id/execute"
+    features:
+      - Daily reminders via WhatsApp integration
+      - Task completion tracking
+      - KPI monitoring dashboard
+      - Milestone celebrations
+    components_needed:
+      - ReminderManager
+      - TaskTracker
+      - KPIMonitor
+      - CelebrationToast
+
+  # Review Phase
+  - screen: "30-Day Review"
+    path: "/dashboard/rooms/:id/review-report"
+    features:
+      - KPI delta compilation
+      - PDF report generation
+      - Next room suggestion
+    components_needed:
+      - ReportGenerator
+      - KPIDeltaChart
+      - NextRoomSuggester
+
+integration_services_needed:
+  - POS Integration Service (Petpooja, Posist)
+  - Delivery Hub Service (UrbanPiper)
+  - WhatsApp Business API Service
+  - PDF Generation Service
+  - Analytics Service
+
+api_endpoints_needed:
+  - /api/outlets
+  - /api/integrations
+  - /api/strategy
+  - /api/tasks
+  - /api/kpi
+  - /api/reports

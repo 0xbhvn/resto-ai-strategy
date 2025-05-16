@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import type { RefObject } from 'react';
 
 const outletFormSchema = z.object({
 	name: z.string().min(2, 'Restaurant name must be at least 2 characters'),
@@ -33,9 +34,10 @@ const defaultValues: Partial<OutletFormValues> = {
 
 interface OutletFormProps {
 	onSubmit: (values: OutletFormValues) => void;
+	formRef?: RefObject<HTMLFormElement | null>;
 }
 
-export function OutletForm({ onSubmit }: OutletFormProps) {
+export function OutletForm({ onSubmit, formRef }: OutletFormProps) {
 	const form = useForm<OutletFormValues>({
 		resolver: zodResolver(outletFormSchema),
 		defaultValues,
@@ -44,6 +46,7 @@ export function OutletForm({ onSubmit }: OutletFormProps) {
 	return (
 		<Form {...form}>
 			<form
+				ref={formRef}
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="space-y-6"
 			>
