@@ -1,0 +1,117 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Task Management System
+
+This rule documents the implementation of the task management system in the Nitify restaurant growth dashboard, which enables restaurant owners to execute on AI-generated growth strategies.
+
+## Core Components
+
+The task management system consists of these key components:
+
+- **Task Board**: `/components/tasks/task-board.tsx`
+  - Kanban-style board with drag-and-drop functionality
+  - Columns: To-Do, Doing, Done
+  - Built using shadcn/ui components with dnd-kit
+
+- **Task Card**: `/components/tasks/task-card.tsx`
+  - Displays task details, due date, and owner
+  - Progress indicator for subtasks
+  - Action menu for status changes
+
+- **Task Detail**: `/components/tasks/task-detail.tsx`
+  - Side panel with detailed task information
+  - Subtask management
+  - Photo upload for completed tasks
+
+## Data Implementation
+
+- **Task Model**: `/lib/types/task.ts`
+  - Properties: id, strategyId, title, description, status, dueDate, owner, completedAt
+  - Related to Strategy through strategyId
+
+- **Subtask Model**: `/lib/types/subtask.ts`
+  - Properties: id, taskId, title, status, dueDate, completedAt
+  - Related to Task through taskId
+
+- **Task Status**: `/lib/types/task-status.ts`
+  - Enum: "todo" | "doing" | "done"
+
+## Task Creation Flow
+
+1. **Strategy Approval**
+   - After AI strategy is approved, tasks are created
+   - Implementation: `/lib/tasks/task-builder.ts`
+
+2. **Task Generation**
+   - Each strategy action becomes a task
+   - Each task action subtask becomes a subtask
+   - Implementation: `/lib/tasks/generators.ts`
+
+3. **Owner Assignment**
+   - Default owners based on task type (Manager, Chef, etc.)
+   - Can be reassigned by the user
+   - Implementation: `/lib/tasks/assign.ts`
+
+4. **Due Date Calculation**
+   - Based on action priority and complexity
+   - Implementation: `/lib/tasks/due-dates.ts`
+
+## Task Management Features
+
+- **Drag-and-Drop**: `/components/tasks/drag-context.tsx`
+  - Status updates through drag operations
+  - Updates database via server action
+
+- **Filtering**: `/components/tasks/task-filters.tsx`
+  - Filter by status, owner, due date
+  - Search by task title/description
+
+- **Sorting**: `/components/tasks/task-sort.tsx`
+  - Sort by due date, creation date, priority
+
+- **Batch Actions**: `/components/tasks/batch-actions.tsx`
+  - Mass status updates
+  - Reassign multiple tasks
+
+## Reminder System
+
+- **WhatsApp Reminders**: `/lib/reminders/whatsapp.ts`
+  - Daily reminders at 09:00 local time
+  - Implementation via WhatsApp Business Cloud API
+  - Deep links back to tasks
+
+- **Email Reminders**: `/lib/reminders/email.ts`
+  - Alternative reminder channel
+  - HTML templates: `/lib/emails/task-reminder.tsx`
+
+- **Reminder Scheduler**: `/lib/reminders/scheduler.ts`
+  - Schedules reminders based on due dates
+  - Avoids reminder overload
+
+## ROI Tracking
+
+- **Task Completion Tracker**: `/lib/tasks/completion-tracker.ts`
+  - Monitors task completion rates
+  - Updates overall strategy progress
+
+- **KPI Impact Tracker**: `/lib/tasks/impact-tracker.ts`
+  - Links task completion to KPI changes
+  - Measures before/after metrics
+
+## Server Actions
+
+- **Create Task**: `/lib/actions/tasks/create.ts`
+- **Update Task**: `/lib/actions/tasks/update.ts`
+- **Delete Task**: `/lib/actions/tasks/delete.ts`
+- **Create Subtask**: `/lib/actions/tasks/create-subtask.ts`
+- **Update Subtask**: `/lib/actions/tasks/update-subtask.ts`
+- **Delete Subtask**: `/lib/actions/tasks/delete-subtask.ts`
+
+## Extension Points
+
+- **Custom Task Templates**: `/lib/tasks/templates/`
+- **New Task Types**: Extend the task model in `/lib/types/task.ts`
+- **Integration Webhooks**: Add new reminder channels in `/lib/reminders/`

@@ -1,0 +1,58 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Nitify Project Structure
+
+This rule explains the Next.js App Router structure for the Nitify restaurant growth dashboard application.
+
+## App Router Structure
+
+- `/app`: Main application directory using Next.js App Router
+  - `/api`: API routes for backend functionality
+    - `/auth`: Authentication endpoints
+    - `/connectors`: Integration endpoints for POS, delivery platforms, etc.
+    - `/dashboard`: Dashboard data endpoints
+    - `/strategy`: AI strategy generation endpoints
+  - `/(auth)`: Authentication flow pages (login, signup)
+  - `/(dashboard)`: Dashboard pages using route groups
+    - `/rooms`: Strategy rooms components (Boost Profits, Get More Orders, etc.) 
+    - `/wizard`: Onboarding wizard flow components
+    - `/integrations`: Connector marketplace components
+    - `/settings`: User and outlet settings
+  - `/layout.tsx`: Root layout with providers
+  - `/page.tsx`: Landing page
+
+## Key Components Organization
+
+- `/components`: Reusable UI components
+  - `/ui`: Basic UI components built with shadcn
+  - `/dashboard`: Dashboard-specific components
+  - `/rooms`: Room-specific components
+  - `/wizard`: Onboarding wizard components
+  - `/charts`: Data visualization components
+  - `/forms`: Form components using React Hook Form
+
+## Data Handling
+
+- `/lib`: Utility functions and shared code
+  - `/actions`: Server actions for forms
+  - `/api`: API client utilities
+  - `/hooks`: Custom React hooks
+  - `/utils`: Helper functions
+  - `/validators`: Zod validation schemas
+
+## State Management
+
+- `/providers`: React context providers
+  - `/theme-provider.tsx`: Theme provider
+  - `/auth-provider.tsx`: Authentication state provider
+  - `/integration-provider.tsx`: Integration status provider
+
+## Configuration
+
+- `/config`: Application configuration
+  - `/site.ts`: Site-wide configuration
+  - `/dashboard.ts`: Dashboard configuration
+  - `/integrations.ts`: Third-party integration configuration

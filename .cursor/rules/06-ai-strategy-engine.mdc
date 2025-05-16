@@ -1,0 +1,102 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# AI Strategy Generation Engine
+
+This rule documents the AI strategy generation engine used in Nitify to transform restaurant data into actionable strategies.
+
+## System Overview
+
+The AI strategy engine uses the OpenAI o3 model with RAG (Retrieval Augmented Generation) to generate personalized growth strategies for restaurant owners.
+
+- **Core Engine**: `/lib/ai/engine.ts`
+- **Prompt Templates**: `/lib/ai/prompts/`
+- **Knowledge Base**: `/lib/ai/knowledge/`
+- **Response Parsers**: `/lib/ai/parsers/`
+
+## Prompt Engineering
+
+The system uses a layered prompt structure:
+
+1. **System Persona**: `/lib/ai/prompts/system-prompt.ts`
+   - Defines the AI as a restaurant-operations analyst
+   - Sets output format and validation rules
+
+2. **Dynamic Outlet Profile**: Generated from outlet data
+   - Combines all 50 questions from the Master Question Bank
+   - Highlights high-priority fields for room-specific strategy
+
+3. **Room Context**: `/lib/ai/prompts/rooms/[room-code].ts`
+   - Room-specific context, goals, and constraints
+   - Example: Boost Profits, Get More Orders, etc.
+
+## RAG Implementation
+
+- **Vector Store**: Pinecone - `/lib/ai/vector-store.ts`
+- **Embeddings**: OpenAI embeddings - `/lib/ai/embeddings.ts`
+- **Chunk Management**: `/lib/ai/chunker.ts`
+- **Retrieval Logic**: `/lib/ai/retrieval.ts`
+
+## Strategy Generation Flow
+
+1. **Data Preparation**: `/lib/ai/prepare-data.ts`
+   - Collects all outlet profile answers
+   - Retrieves current KPIs from integrations
+   - Formats data for prompt injection
+
+2. **RAG Retrieval**: `/lib/ai/retrieve-context.ts`
+   - Performs semantic search based on room type
+   - Retrieves relevant snippets from knowledge base
+
+3. **Generation**: `/lib/ai/generate-strategy.ts`
+   - Combines system prompt, outlet data, and RAG snippets
+   - Calls OpenAI API with appropriate parameters
+   - JSON output with guardrails enforced
+
+4. **Parsing & Validation**: `/lib/ai/validate-response.ts`
+   - Validates JSON structure
+   - Ensures all required fields are present
+   - Checks business logic constraints
+
+## Output Schema
+
+The AI generates a structured JSON response:
+
+```typescript
+interface StrategyResponse {
+  status: "STRATEGY" | "CALL_FOR_DATA" | "CLARIFY";
+  summary: string;
+  issues: Array<{
+    id: string;
+    desc: string;
+    roi_pp: number;
+  }>;
+  actions: Array<{
+    title: string;
+    why: string;
+    estimated_roi_pp: number;
+    subtasks: Array<{
+      title: string;
+      owner: string;
+      due_days: number;
+    }>;
+  }>;
+  quick_calcs: Record<string, number>;
+  next_check_date: string;
+}
+```
+
+## Error Handling
+
+- **Missing Data Detection**: Automatically requests missing high-priority data
+- **Validation Failures**: Range checks for numeric values with appropriate fallbacks
+- **Hallucination Prevention**: Structured output with factual guardrails
+- **Retry Logic**: Exponential backoff for API failures
+
+## Extension Points
+
+- **Custom Room Implementation**: Create new room strategy generators in `/lib/ai/prompts/rooms/`
+- **Knowledge Base Updates**: Update RAG snippets in `/lib/ai/knowledge/`
+- **Model Switching**: Configure different models in `/lib/ai/config.ts`

@@ -1,0 +1,104 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Nitify API Integrations
+
+This rule documents the third-party API integrations for the Nitify restaurant growth dashboard, explaining their implementation patterns and data structure.
+
+## Core Integrations
+
+### POS Systems
+- **Petpooja** 
+  - Endpoint: `/api/connectors/petpooja`
+  - Auth: OAuth2.0
+  - Data retrieved: Sales, menu, recipe costing, inventory
+  - Implementation: `/app/api/connectors/petpooja/[...route]/route.ts`
+
+- **Posist**
+  - Endpoint: `/api/connectors/posist`
+  - Auth: OpenAPI marketplace
+  - Data retrieved: Sales, staff clocks, inventory
+  - Implementation: `/app/api/connectors/posist/[...route]/route.ts`
+
+### Delivery Aggregators
+- **UrbanPiper** (Hub for Swiggy & Zomato)
+  - Endpoint: `/api/connectors/urbanpiper`
+  - Auth: API Key
+  - Data retrieved: Channel mix, commissions, delivery orders
+  - Implementation: `/app/api/connectors/urbanpiper/[...route]/route.ts`
+
+- **Swiggy Partner API**
+  - Endpoint: `/api/connectors/swiggy`
+  - Auth: API Key + Secret
+  - Data retrieved: Live orders, commission tiers
+  - Implementation: `/app/api/connectors/swiggy/[...route]/route.ts`
+
+- **Zomato Order API**
+  - Endpoint: `/api/connectors/zomato`
+  - Auth: OAuth2.0
+  - Data retrieved: Order webhooks, ratings
+  - Implementation: `/app/api/connectors/zomato/[...route]/route.ts`
+
+### Customer & Marketing
+- **Google Business Profile API**
+  - Endpoint: `/api/connectors/google-business`
+  - Auth: OAuth2.0
+  - Data retrieved: Rating, review volume
+  - Implementation: `/app/api/connectors/google-business/[...route]/route.ts`
+
+- **Reelo CRM API**
+  - Endpoint: `/api/connectors/reelo`
+  - Auth: API Key
+  - Data retrieved: Repeat purchase %, loyalty type
+  - Implementation: `/app/api/connectors/reelo/[...route]/route.ts`
+
+### Communication
+- **WhatsApp Business Cloud API**
+  - Endpoint: `/api/connectors/whatsapp`
+  - Auth: OAuth2.0
+  - Implementation: `/app/api/connectors/whatsapp/[...route]/route.ts`
+  - Usage: Reminder & clarification loops
+
+### Financial
+- **Tally API**
+  - Endpoint: `/api/connectors/tally`
+  - Auth: API Key
+  - Data retrieved: Rent, utilities, loan EMI
+  - Implementation: `/app/api/connectors/tally/[...route]/route.ts`
+
+### HR
+- **Keka HR API**
+  - Endpoint: `/api/connectors/keka`
+  - Auth: OAuth2.0
+  - Data retrieved: Staff counts, turnover
+  - Implementation: `/app/api/connectors/keka/[...route]/route.ts`
+
+## Integration Management
+
+- **Connector Registry**: `/lib/connectors/registry.ts` - Central registry of all connectors
+- **OAuth Handler**: `/app/api/auth/[...connector]/route.ts` - Handles OAuth flows
+- **Connector Status**: `/lib/connectors/status.ts` - Checks connector status
+- **Data Sync**: `/lib/connectors/sync.ts` - Manages data synchronization
+
+## Data Transformation Layer
+
+- **Transformer**: `/lib/transformers/[connector-name].ts` - Transforms API responses to Nitify data model
+- **Cache Layer**: `/lib/cache/[connector-name].ts` - Caches API responses
+- **Fallback Mechanism**: `/lib/connectors/fallback.ts` - CSV upload fallback when APIs fail
+
+## Error Handling
+
+- Error handling follows a consistent pattern:
+  - Rate limit detection
+  - Exponential backoff
+  - Fallback to cached data
+  - User-friendly error messages
+
+## Security
+
+- API keys and secrets are stored in environment variables
+- Sensitive data is encrypted at rest using AES-256
+- OAuth tokens are refreshed automatically before expiry
+- API access is scoped to minimize exposure

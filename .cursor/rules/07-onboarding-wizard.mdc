@@ -1,0 +1,90 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Onboarding Wizard Flow
+
+This rule documents the implementation of the onboarding wizard flow in the Nitify restaurant growth dashboard.
+
+## Wizard Structure
+
+The onboarding wizard is designed to collect essential restaurant data with minimal friction, following a progressive disclosure pattern.
+
+### Wizard Stages
+
+The wizard has a multi-stage flow:
+
+1. **Account Creation**
+   - Implementation: `/app/(auth)/signup/page.tsx`
+   - Components: `/components/auth/signup-form.tsx`
+   - Form validation: `/lib/schemas/auth.schema.ts`
+
+2. **Outlet Creation**
+   - Implementation: `/app/onboarding/outlet/page.tsx`
+   - Components: `/components/wizard/outlet-form.tsx`
+   - Collects: Restaurant type, brand name, location
+
+3. **Integration Fast-Track**
+   - Implementation: `/app/onboarding/integrations/page.tsx`
+   - Components: `/components/integrations/connector-cards.tsx`
+   - OAuth flows: `/app/api/auth/[...connector]/route.ts`
+
+4. **P0 Question Collection (Must-Know 10)**
+   - Implementation: `/app/onboarding/wizard/[step]/page.tsx`
+   - High-priority questions: Identity, Money Snapshot, Goals & Pain
+   - Components: `/components/wizard/p0-questions/`
+
+5. **Dashboard Introduction**
+   - Implementation: `/app/onboarding/complete/page.tsx`
+   - Highlights key features and next steps
+   - Animation: `/components/wizard/confetti.tsx`
+
+## Form Implementation
+
+- **Wizard Controller**: `/lib/wizard/controller.ts`
+  - Manages wizard state and progression
+  - Tracks completion status
+
+- **Wizard Navigation**: `/components/wizard/navigation.tsx`
+  - Handles back/forward navigation
+  - Progress indicator
+
+- **Question Components**:
+  - Numeric: `/components/wizard/inputs/numeric-input.tsx`
+  - Slider: `/components/wizard/inputs/slider-input.tsx`
+  - Drag-Rank: `/components/wizard/inputs/drag-rank-input.tsx`
+  - Toggle: `/components/wizard/inputs/toggle-input.tsx`
+  - Dropdown: `/components/wizard/inputs/dropdown-input.tsx`
+  - Image Upload: `/components/wizard/inputs/image-upload.tsx`
+
+## Data Collection Strategy
+
+The wizard implements a progressive disclosure strategy:
+
+1. **P0 Questions**: Required during onboarding (10 essential questions)
+2. **P1 Questions**: Requested during room strategy generation
+3. **P2 Questions**: Optional for enhanced accuracy
+
+## Auto-Fill Implementation
+
+- **Connector Integration**: `/lib/wizard/auto-fill.ts`
+  - Automatically populates fields from connected services
+  - Visual indication of auto-filled fields
+
+- **Field Validation**: `/lib/schemas/profile-answer.schema.ts`
+  - Range checks for numeric values
+  - Format validation for specialized fields
+
+## User Experience Considerations
+
+- **Progress Tracking**: Clear progress indicators with milestone celebrations
+- **Micro-Wins**: Confetti animations at critical completion points
+- **Error Prevention**: Inline validation with helpful error messages
+- **Connector Benefits**: Clear indication of time saved through integrations
+
+## Extension Points
+
+- **New Questions**: Add to `/lib/data/questions.ts`
+- **Question Logic**: Implement conditional logic in `/lib/wizard/conditions.ts`
+- **New Input Types**: Add to `/components/wizard/inputs/`

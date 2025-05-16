@@ -1,0 +1,124 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Strategy Room Implementation
+
+This rule documents the implementation of strategy rooms in the Nitify restaurant growth dashboard, which are the core interactive spaces for restaurant owners to generate and execute growth strategies.
+
+## Room Structure
+
+Nitify has 14 distinct strategy rooms organized into 4 classes:
+
+### Money Makers (M)
+- **BP**: Boost Profits
+- **GO**: Get More Orders
+- **KC**: Keep Customers Coming Back
+- **TC**: Track Your Cash
+- **BV**: Boost Brand Visibility
+
+### Systems (S)
+- **PS**: Plan Your Stock
+- **SS**: Smooth Staff Shifts
+- **BS**: Buy Smarter
+- **TU**: Easy Tech Upgrades
+
+### Customer Experience (C)
+- **DD**: Delight Your Guests
+- **FW**: Cut Food & Packaging Waste
+- **NI**: New Menu Ideas
+
+### Wider-Scope (W)
+- **SL**: Stay Safe & Legal
+- **GN**: Grow to New Locations
+- **FL**: Find Funding & Loans
+- **EC**: Events & Catering Cash
+
+## Room Implementation
+
+Each room follows a consistent implementation pattern:
+
+- **Room Configuration**: `/lib/rooms/[room-code].ts`
+- **Room UI Component**: `/app/(dashboard)/rooms/[room-code]/page.tsx`
+- **Room Layout Component**: `/components/rooms/[room-code]/layout.tsx`
+- **Room-specific Components**: `/components/rooms/[room-code]/`
+
+## Room Workflow
+
+The standard room workflow:
+
+1. **Readiness Check**
+   - API Route: `/app/api/rooms/[room-code]/readiness/route.ts`
+   - Checks if all required P0/P1 questions are answered
+
+2. **Micro-Wizard** (if data is missing)
+   - Component: `/components/rooms/micro-wizard.tsx`
+   - Collects missing room-specific data
+   - Implementation: `/lib/rooms/micro-wizard.ts`
+
+3. **Strategy Generation**
+   - API Route: `/app/api/rooms/[room-code]/strategy/route.ts`
+   - Generates AI strategy based on outlet data
+
+4. **Strategy Review**
+   - Component: `/components/rooms/strategy-review.tsx`
+   - Displays issues, actions, and calculations
+   - Allows revision requests
+
+5. **Task Creation**
+   - Component: `/components/rooms/task-builder.tsx`
+   - Converts strategy actions into tasks and subtasks
+
+6. **Execution Board**
+   - Component: `/components/rooms/task-board.tsx`
+   - Kanban-style board for task management
+
+7. **KPI Monitoring**
+   - Component: `/components/rooms/kpi-tracker.tsx`
+   - Real-time tracking of key performance indicators
+
+## Room-Specific Logic
+
+Each room has specific question sets and KPIs:
+
+- **Boost Profits (BP)**
+  - Core metrics: Gross margin, food cost %, average order value
+  - Components: `/components/rooms/bp/`
+  
+- **Get More Orders (GO)**
+  - Core metrics: Order volume, channel mix, delivery time
+  - Components: `/components/rooms/go/`
+  
+- **Keep Customers (KC)**
+  - Core metrics: Repeat rate, customer list size, ratings
+  - Components: `/components/rooms/kc/`
+
+## Shared Room Components
+
+- **RoomCard**: `/components/rooms/room-card.tsx`
+- **RoomGrid**: `/components/rooms/room-grid.tsx`
+- **RoomHeader**: `/components/rooms/room-header.tsx`
+- **StrategyCard**: `/components/rooms/strategy-card.tsx`
+- **TaskItem**: `/components/rooms/task-item.tsx`
+
+## KPI Visualization
+
+- Margin spark-lines: `/components/rooms/sparkline.tsx`
+- Traffic light indicators: `/components/rooms/indicator.tsx`
+- Channel mix charts: `/components/rooms/channel-mix.tsx`
+
+## Room Selection Logic
+
+- Room readiness is calculated in `/lib/rooms/readiness.ts`
+- Room selection recommendations in `/lib/rooms/recommender.ts`
+- Room status indicators (Ready/Needs Info/Done) in `/components/rooms/status-chip.tsx`
+
+## Extending Rooms
+
+To create a new room:
+
+1. Add room configuration to `/lib/rooms/index.ts`
+2. Create room-specific components in `/components/rooms/[new-code]/`
+3. Create room page in `/app/(dashboard)/rooms/[new-code]/page.tsx`
+4. Add AI prompt template in `/lib/ai/prompts/rooms/[new-code].ts`

@@ -1,0 +1,73 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Tailwind v4 Configuration
+
+This rule explains the Tailwind CSS v4 configuration for the Nitify restaurant growth dashboard.
+
+## Color Palette
+
+The project uses a specific color palette aligned with the UX/UI vision document:
+
+- **Primary Colors**: 
+  - `primary`: #288CFA (Vivid Blue) - Used for trust and intelligence elements
+  - `secondary`: #FFC107 (Warm Amber) - Used for highlights and calls-to-action
+
+- **Semantic Colors**:
+  - `success`: #2E865F (Forest Green) - Used for positive indicators and growth metrics
+  - `warning`: #FF6B6B (Coral Red) - Used for alerts and warnings
+  - `info`: #17A2B8 (Teal) - Used for informational elements
+  - `muted`: #E0E0E0 (Gray) - Used for background elements
+
+- **Neutral Colors**:
+  - `background`: #F5F5F5 (Light Gray) - Main background
+  - `foreground`: #202020 (Charcoal) - Main text color
+  - `muted-foreground`: #7E7E7E (Medium Gray) - Secondary text
+
+## Typography
+
+The typography follows a specific hierarchy with the Inter font family:
+
+- `base`: 14px
+- `paragraph`: 16px
+- `heading`: 20-24px
+- Different weights: 400 (Regular), 500 (Medium), 600-700 (Bold)
+
+## Custom Classes
+
+Custom Tailwind classes for the dashboard:
+
+- `.room-card`: Styling for room cards in the dashboard
+- `.wizard-step`: Styling for onboarding wizard steps
+- `.metric-card`: Styling for KPI metric cards
+- `.integration-card`: Styling for integration connector cards
+
+## Breakpoints
+
+Responsive breakpoints are configured as:
+
+- `xs`: 480px
+- `sm`: 640px
+- `md`: 768px
+- `lg`: 1024px
+- `xl`: 1280px
+- `2xl`: 1536px
+
+## Animations
+
+Custom animations defined in Tailwind:
+
+- `spin`: For loading spinners
+- `pulse`: For notification indicators
+- `bounce`: For confetti and celebration elements
+- `fade-in`: For component transitions
+
+## Extending Tailwind
+
+The configuration extends Tailwind with custom properties for:
+
+- Border radius (8-12px for a friendly, modern feel)
+- Drop shadows (subtle for depth cues)
+- Custom spacing units aligned with the design system

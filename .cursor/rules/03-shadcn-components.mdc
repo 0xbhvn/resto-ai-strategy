@@ -1,0 +1,77 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Shadcn UI Components
+
+This rule documents the shadcn/ui components used in the Nitify restaurant growth dashboard, their customizations, and implementation patterns.
+
+## Core Components
+
+The application uses the following key shadcn/ui components, customized to match the Nitify design system:
+
+- **Card**: Used for room cards, KPI metrics, and integration connectors
+  - Custom border radius (8-12px)
+  - Subtle drop shadows
+  - Variants: `default`, `metric`, `room`, `integration`
+
+- **Button**: Primary interaction elements
+  - Variants: `default`, `outline`, `ghost`, `link`, `destructive`
+  - Sizes: `sm`, `default`, `lg`
+  - Custom states for the wizard flow
+
+- **Form Components**: For data collection
+  - Input
+  - Select
+  - Checkbox
+  - RadioGroup
+  - Slider (custom-styled for wizard data collection)
+  - Textarea
+
+- **Dialog**: For micro-wizards and confirmations
+  - Customized for progressive disclosure of questions
+
+- **Toast**: For notifications and celebrations
+  - Custom animations for "milestone confetti"
+
+## Dashboard-Specific Components
+
+- **Tabs**: For switching between different views in rooms
+- **Sheet**: For task details and action steps
+- **Avatar**: For user accounts
+- **DropdownMenu**: For action menus
+- **Progress**: For wizard completion tracking
+- **Separator**: For visual organization
+
+## Data Visualization Components
+
+Extended shadcn components for data visualization:
+
+- **MetricCard**: Custom component for KPI metrics
+- **SparkLine**: For margin trend visualization
+- **DoughnutChart**: For channel mix visualization
+- **BarChart**: For comparative metrics
+
+## Wizard Components
+
+Custom shadcn extensions for the wizard flow:
+
+- **WizardStep**: Progressive step component
+- **WizardNavigation**: Navigation between wizard steps
+- **DragRankList**: Custom component for ranking questions
+
+## Theme Configuration
+
+- Theme configuration is centralized in `/components/ui/theme.js`
+- Dark mode support is implemented but defaults to light mode
+- Animations are consistent with the shadcn framework but extended for micro-interactions
+
+## Implementation Pattern
+
+When using shadcn components:
+
+1. Import from `/components/ui/[component-name]`
+2. Use the component with Nitify-specific props where applicable
+3. For layout components, prefer the shadcn grid and flex utilities
+4. For custom variants, use the `className` prop with Tailwind utilities

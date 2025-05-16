@@ -1,0 +1,113 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Analytics & Reporting System
+
+This rule documents the analytics and reporting functionality in the Nitify restaurant growth dashboard, which tracks KPIs and generates performance reports.
+
+## Core Components
+
+The analytics system consists of these key components:
+
+- **KPI Dashboard**: `/components/analytics/kpi-dashboard.tsx`
+  - Primary metrics overview
+  - Real-time KPI visualization
+  - Trend indicators
+
+- **Metric Cards**: `/components/analytics/metric-card.tsx`
+  - Individual KPI displays
+  - Shows current value, change, and trend
+  - Color-coded performance indicators
+
+- **Chart Components**: `/components/analytics/charts/`
+  - Line charts: `/components/analytics/charts/line-chart.tsx`
+  - Bar charts: `/components/analytics/charts/bar-chart.tsx`
+  - Pie charts: `/components/analytics/charts/pie-chart.tsx`
+  - Sparklines: `/components/analytics/charts/sparkline.tsx`
+
+## Data Structure
+
+- **KPI Snapshot Model**: `/lib/types/kpi-snapshot.ts`
+  - Properties: id, outletId, date, metrics (JSON), source
+  - Stores time-series KPI data from integrations
+
+- **KPI Definitions**: `/lib/analytics/kpi-definitions.ts`
+  - Defines calculation methods for each KPI
+  - Sets targets and thresholds for visual indicators
+
+- **Metric Categories**:
+  - Financial: Gross margin, food cost %, labor cost %
+  - Operations: Order volume, delivery time
+  - Customer: Repeat rate, ratings, sentiment
+  - Marketing: Channel mix, new customers
+
+## Data Collection Flow
+
+1. **Integration Polling**: `/lib/analytics/data-collectors/`
+  - POS collector: `/lib/analytics/data-collectors/pos.ts`
+  - Delivery collector: `/lib/analytics/data-collectors/delivery.ts`
+  - Review collector: `/lib/analytics/data-collectors/reviews.ts`
+
+2. **Data Normalization**: `/lib/analytics/normalizers/`
+  - Converts raw API data to standardized metrics
+  - Handles different formats from various integrations
+
+3. **Snapshot Creation**: `/lib/analytics/snapshot-creator.ts`
+  - Creates daily snapshots of key metrics
+  - Stores in KPISnapshot database table
+
+4. **Baseline Calculation**: `/lib/analytics/baseline-calculator.ts`
+  - Establishes baseline metrics before strategy implementation
+  - Used for ROI calculations
+
+## Reporting Features
+
+- **30-Day Report**: `/components/reports/thirty-day-report.tsx`
+  - Summary of KPI changes over 30 days
+  - Strategy effectiveness evaluation
+  - PDF generation: `/lib/reports/pdf-generator.ts`
+
+- **Weekly Digest**: `/components/reports/weekly-digest.tsx`
+  - Weekly summary of key metrics
+  - Task completion status
+  - Next steps recommendations
+
+- **Channel Performance**: `/components/reports/channel-performance.tsx`
+  - Breakdown of performance by channel (dine-in, delivery, takeaway)
+  - Channel mix optimization suggestions
+
+## Notification System
+
+- **KPI Alerts**: `/lib/analytics/alerts/kpi-alerts.ts`
+  - Triggers notifications when KPIs cross thresholds
+  - Implemented for both positive and negative changes
+
+- **Milestone Notifications**: `/lib/analytics/alerts/milestone-alerts.ts`
+  - Celebrates achievement of KPI goals
+  - Triggers confetti animations and notifications
+
+- **WhatsApp Digests**: `/lib/analytics/notifications/whatsapp-digest.ts`
+  - Scheduled "Friday KPI Pulse" messages
+  - Summarizes week's performance
+
+## Implementation Details
+
+- **Data Fetching**: Server components with React Suspense
+- **Chart Library**: Recharts with custom styling
+- **PDF Generation**: React-PDF for report generation
+- **Real-time Updates**: WebSocket for live KPI updates
+
+## Server Actions
+
+- **Fetch KPI Data**: `/lib/actions/analytics/fetch-kpis.ts`
+- **Generate Report**: `/lib/actions/analytics/generate-report.ts`
+- **Set KPI Target**: `/lib/actions/analytics/set-target.ts`
+- **Toggle KPI Visibility**: `/lib/actions/analytics/toggle-kpi.ts`
+
+## Extension Points
+
+- **New KPI Definitions**: Add to `/lib/analytics/kpi-definitions.ts`
+- **Custom Reports**: Create new report templates in `/components/reports/`
+- **Integration Collectors**: Add new data collectors in `/lib/analytics/data-collectors/`
