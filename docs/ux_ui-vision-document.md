@@ -1,3 +1,5 @@
+# Nitify UX/UI Vision Document
+
 Below is a comprehensive **UX/UI Vision Document** for Nitify’s web-first dashboard. It covers overall style, layout patterns, interactive components, color schemes, typography, and concrete examples from Nicelydone and other top design resources to guide your designers.
 
 ---
@@ -93,4 +95,3 @@ Designers should explore these **dashboard-style** examples on Nicelydone for la
 ---
 
 This vision doc should give your designers a **clear, actionable blueprint**: a modern, approachable SaaS dashboard grounded in proven UX patterns, with a harmonious color system and real-world examples from today’s best web apps.
-
