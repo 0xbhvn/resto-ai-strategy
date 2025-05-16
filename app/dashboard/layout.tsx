@@ -34,7 +34,7 @@ export default function DashboardLayout({
 
 	return (
 		<SidebarProvider>
-			<div className="flex min-h-screen flex-col md:flex-row">
+			<div className="w-full flex min-h-screen flex-col md:flex-row">
 				<Sidebar>
 					<SidebarHeader>
 						<div className="font-bold text-xl">Nitify</div>
