@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import {
 	Card,
 	CardContent,
@@ -8,20 +7,41 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
-import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 
 export default function DashboardPage() {
-	const router = useRouter();
+	const [isLoaded, setIsLoaded] = useState(false);
+
+	// Add a mounting effect to ensure the component loads
+	useEffect(() => {
+		setIsLoaded(true);
+
+		// Check for wizard form data in localStorage
+		const formData = localStorage.getItem('wizardFormData');
+		if (formData) {
+			console.log('Retrieved form data:', JSON.parse(formData));
+			// In a real app, you would use this data to personalize the dashboard
+		}
+	}, []);
+
+	if (!isLoaded) {
+		return (
+			<div className="container px-4 md:px-6 py-10">
+				Loading dashboard...
+			</div>
+		);
+	}
 
 	return (
-		<div className="container mx-auto py-10">
+		<div className="container px-4 md:px-6 py-10">
 			<h1 className="text-3xl font-bold mb-6">Welcome to Nitify</h1>
 			<p className="text-muted-foreground mb-8">
 				Your restaurant growth dashboard is ready. Explore the strategy
 				rooms to get started.
 			</p>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 				<StrategyCard
 					title="Boost Profits"
 					description="Simple menu tweaks to keep ₹3–5 more from every ₹100 you sell."
@@ -56,12 +76,6 @@ export default function DashboardPage() {
 						console.log('Boost Brand Visibility clicked')
 					}
 				/>
-			</div>
-
-			<div className="mt-8">
-				<Button onClick={() => router.push('/onboarding')}>
-					Back to Onboarding
-				</Button>
 			</div>
 		</div>
 	);
