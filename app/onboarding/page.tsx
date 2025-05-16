@@ -1,16 +1,20 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { WizardLayout } from '@/components/wizard/wizard-layout';
 import { OutletForm } from '@/components/wizard/outlet-form';
 import type { OutletFormValues } from '@/components/wizard/outlet-form';
 import { useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+	CardHeader,
+	CardTitle,
+	CardContent,
+	CardFooter,
+} from '@/components/ui/card';
 
 export default function OnboardingPage() {
 	const router = useRouter();
 	const formRef = useRef<HTMLFormElement>(null);
-	const currentStep = 1;
-	const totalSteps = 4; // Updated to reflect the added money-snapshot step
 
 	const handleOutletSubmit = (values: OutletFormValues) => {
 		console.log('Outlet form values:', values);
@@ -19,22 +23,30 @@ export default function OnboardingPage() {
 	};
 
 	return (
-		<WizardLayout
-			title="Tell us about your restaurant"
-			description="Let's start by gathering some basic information about your business."
-			currentStep={currentStep}
-			totalSteps={totalSteps}
-			onNext={() => {
-				// Trigger the form submission when Next is clicked
-				formRef.current?.requestSubmit();
-			}}
-			isNextDisabled={false} // Enable the Continue button
-			nextLabel="Continue"
-		>
-			<OutletForm
-				onSubmit={handleOutletSubmit}
-				formRef={formRef}
-			/>
-		</WizardLayout>
+		<>
+			<CardHeader>
+				<CardTitle className="text-2xl font-semibold">
+					Tell us about your restaurant
+				</CardTitle>
+				<p className="text-muted-foreground text-sm mt-1">
+					Let&apos;s start by gathering some basic information about
+					your business.
+				</p>
+			</CardHeader>
+
+			<CardContent>
+				<OutletForm
+					onSubmit={handleOutletSubmit}
+					formRef={formRef}
+				/>
+			</CardContent>
+
+			<CardFooter className="flex justify-between">
+				<div />
+				<Button onClick={() => formRef.current?.requestSubmit()}>
+					Continue
+				</Button>
+			</CardFooter>
+		</>
 	);
 }

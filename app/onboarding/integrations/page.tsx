@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { WizardLayout } from '@/components/wizard/wizard-layout';
 import {
 	Card,
 	CardContent,
@@ -15,62 +14,77 @@ import { Separator } from '@/components/ui/separator';
 
 export default function IntegrationsPage() {
 	const router = useRouter();
-	const currentStep = 2;
-	const totalSteps = 4;
 
 	const handleContinue = () => {
 		router.push('/onboarding/money-snapshot');
 	};
 
 	return (
-		<WizardLayout
-			title="Connect Your Systems"
-			description="Nitify works best when connected to your existing systems. This allows us to automatically pull in data and save you time."
-			currentStep={currentStep}
-			totalSteps={totalSteps}
-			onNext={handleContinue}
-			onBack={() => router.push('/onboarding')}
-			isNextDisabled={false}
-			nextLabel="Continue"
-		>
-			<div className="space-y-4">
-				<IntegrationCard
-					title="POS System"
-					description="Connect your Point of Sale system to import sales data, menu items, and more."
-					icon="💻"
-					integrations={['Petpooja', 'Posist']}
-					primaryAction={{
-						label: 'Connect Petpooja',
-						onClick: () => console.log('Connect Petpooja clicked'),
-					}}
-					secondaryAction={{
-						label: 'Connect Posist',
-						onClick: () => console.log('Connect Posist clicked'),
-					}}
-				/>
+		<>
+			<CardHeader>
+				<CardTitle className="text-2xl font-semibold">
+					Connect Your Systems
+				</CardTitle>
+				<p className="text-muted-foreground text-sm mt-1">
+					Nitify works best when connected to your existing systems.
+					This allows us to automatically pull in data and save you
+					time.
+				</p>
+			</CardHeader>
 
-				<IntegrationCard
-					title="Delivery Platforms"
-					description="Connect your delivery aggregators to track orders, commissions, and customer ratings."
-					icon="🛵"
-					integrations={['UrbanPiper', 'Swiggy', 'Zomato']}
-					primaryAction={{
-						label: 'Connect UrbanPiper',
-						onClick: () =>
-							console.log('Connect UrbanPiper clicked'),
-					}}
-					secondaryAction={{
-						label: 'Connect Directly',
-						onClick: () => console.log('Connect directly clicked'),
-					}}
-				/>
+			<CardContent>
+				<div className="space-y-4">
+					<IntegrationCard
+						title="POS System"
+						description="Connect your Point of Sale system to import sales data, menu items, and more."
+						icon="💻"
+						integrations={['Petpooja', 'Posist']}
+						primaryAction={{
+							label: 'Connect Petpooja',
+							onClick: () =>
+								console.log('Connect Petpooja clicked'),
+						}}
+						secondaryAction={{
+							label: 'Connect Posist',
+							onClick: () =>
+								console.log('Connect Posist clicked'),
+						}}
+					/>
 
-				<div className="text-center text-sm text-muted-foreground mt-6">
-					You can always connect these systems later from your
-					dashboard.
+					<IntegrationCard
+						title="Delivery Platforms"
+						description="Connect your delivery aggregators to track orders, commissions, and customer ratings."
+						icon="🛵"
+						integrations={['UrbanPiper', 'Swiggy', 'Zomato']}
+						primaryAction={{
+							label: 'Connect UrbanPiper',
+							onClick: () =>
+								console.log('Connect UrbanPiper clicked'),
+						}}
+						secondaryAction={{
+							label: 'Connect Directly',
+							onClick: () =>
+								console.log('Connect directly clicked'),
+						}}
+					/>
+
+					<div className="text-center text-sm text-muted-foreground mt-6">
+						You can always connect these systems later from your
+						dashboard.
+					</div>
 				</div>
-			</div>
-		</WizardLayout>
+			</CardContent>
+
+			<CardFooter className="flex justify-between">
+				<Button
+					variant="outline"
+					onClick={() => router.push('/onboarding')}
+				>
+					Back
+				</Button>
+				<Button onClick={handleContinue}>Continue</Button>
+			</CardFooter>
+		</>
 	);
 }
 
